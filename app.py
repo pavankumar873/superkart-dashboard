@@ -6,7 +6,7 @@ import os
 # Fix for scikit-learn version mismatch on Streamlit Cloud
 import sklearn.compose._column_transformer
 if not hasattr(sklearn.compose._column_transformer, "_RemainderColsList"):
-    class _RemainderColsList(list): 
+    class _RemainderColsList(list):
         pass
     sklearn.compose._column_transformer._RemainderColsList = _RemainderColsList
 
@@ -41,7 +41,7 @@ with st.form("prediction_form"):
     with col2:
         product_sugar = st.selectbox("Sugar Content", ["Low Sugar", "Regular", "No Sugar"])
         product_type = st.selectbox("Product Type", ["Dairy", "Soft Drinks", "Meat", "Fruits and Vegetables", "Baking Goods", "Snack Foods", "Household"])
-        
+
         # New Interactive Dropdown Inputs added directly to the Streamlit UI
         product_category = st.selectbox("Product Category Group", ["Food", "Drinks", "Non-Consumable"])
         product_id_char = st.selectbox("Product ID Prefix", ["FD", "DR", "NC"])
@@ -54,7 +54,7 @@ with st.form("prediction_form"):
     with col4:
         store_type = st.selectbox("Store Type", ["Supermarket Type1", "Supermarket Type2", "Supermarket Type3", "Grocery Store"])
         store_city = st.selectbox("City Location Type", ["Tier 1", "Tier 2", "Tier 3"])
-        
+
     store_year = st.number_input("Establishment Year", min_value=1900, max_value=2026, value=2010, step=1)
 
     submit = st.form_submit_button("Predict Future Sales")
@@ -73,15 +73,15 @@ if submit:
         "Store_Size": store_size,
         "Store_Location_City_Type": store_city,
         "Store_Type": store_type,
-        
+
         # Maps directly to the new frontend dropdown options selected above
         "Product_Type_Category": product_category,
         "Product_Id_char": product_id_char
     }
-    
+
     # Convert to DataFrame for the scikit-learn/XGBoost pipeline
     input_df = pd.DataFrame([input_data])
-    
+
     # Run pipeline inference
     try:
         prediction = model.predict(input_df)[0]
