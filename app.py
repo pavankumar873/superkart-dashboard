@@ -2,7 +2,18 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
-    
+
+# Fix for scikit-learn version mismatch on Streamlit Cloud
+import sklearn.compose._column_transformer
+if not hasattr(sklearn.compose._column_transformer, "_RemainderColsList"):
+    class _RemainderColsList(list): 
+        pass
+    sklearn.compose._column_transformer._RemainderColsList = _RemainderColsList
+
+# Now you can safely import joblib and your other modules below
+import joblib
+import streamlit as st
+# ... rest of your code
 # Set up page configurations
 st.set_page_config(page_title="SuperKart Sales Forecaster", layout="centered", page_icon="🛒")
 
