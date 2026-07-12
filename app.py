@@ -61,6 +61,9 @@ with st.form("prediction_form"):
 
 # 3. Handle prediction logic when user clicks the button
 if submit:
+    # Calculate Store_Age_Years
+    store_age_years = 2025 - store_year
+
     # Construct input dictionary using the explicit values chosen by the user
     input_data = {
         "Product_Weight": product_weight,
@@ -73,7 +76,7 @@ if submit:
         "Store_Size": store_size,
         "Store_Location_City_Type": store_city,
         "Store_Type": store_type,
-
+        "Store_Age_Years": store_age_years, # Add the calculated Store_Age_Years
         # Maps directly to the new frontend dropdown options selected above
         "Product_Type_Category": product_category,
         "Product_Id_char": product_id_char
