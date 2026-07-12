@@ -37,11 +37,14 @@ with st.form("prediction_form"):
     with col1:
         product_mrp = st.number_input("Product MRP", min_value=0.0, value=150.0, step=1.0)
         product_weight = st.number_input("Product Weight", min_value=0.0, value=12.5, step=0.1)
+        product_area = st.number_input("Allocated Area (Visibility Ratio)", min_value=0.0, max_value=1.0, value=0.05, step=0.01)
     with col2:
         product_sugar = st.selectbox("Sugar Content", ["Low Sugar", "Regular", "No Sugar"])
         product_type = st.selectbox("Product Type", ["Dairy", "Soft Drinks", "Meat", "Fruits and Vegetables", "Baking Goods", "Snack Foods", "Household"])
         
-    product_area = st.number_input("Allocated Area (Visibility Ratio)", min_value=0.0, max_value=1.0, value=0.05, step=0.01)
+        # New Interactive Dropdown Inputs added directly to the Streamlit UI
+        product_category = st.selectbox("Product Category Group", ["Food", "Drinks", "Non-Consumable"])
+        product_id_char = st.selectbox("Product ID Prefix", ["FD", "DR", "NC"])
 
     st.subheader("Store Details")
     col3, col4 = st.columns(2)
@@ -58,7 +61,7 @@ with st.form("prediction_form"):
 
 # 3. Handle prediction logic when user clicks the button
 if submit:
-    # Construct input dictionary mirroring your exact training feature names
+    # Construct input dictionary using the explicit values chosen by the user
     input_data = {
         "Product_Weight": product_weight,
         "Product_Sugar_Content": product_sugar,
@@ -69,7 +72,11 @@ if submit:
         "Store_Establishment_Year": int(store_year),
         "Store_Size": store_size,
         "Store_Location_City_Type": store_city,
-        "Store_Type": store_type
+        "Store_Type": store_type,
+        
+        # Maps directly to the new frontend dropdown options selected above
+        "Product_Type_Category": product_category,
+        "Product_Id_char": product_id_char
     }
     
     # Convert to DataFrame for the scikit-learn/XGBoost pipeline
