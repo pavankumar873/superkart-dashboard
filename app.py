@@ -4,7 +4,17 @@ import joblib
 import os
 
 # Removed fix for scikit-learn version mismatch as model will be retrained with a compatible version
+import sklearn.compose._column_transformer
 
+# Quick fix for scikit-learn version mismatch compatibility
+if not hasattr(sklearn.compose._column_transformer, "_RemainderColsList"):
+    class _RemainderColsList(list):
+        pass
+    sklearn.compose._column_transformer._RemainderColsList = _RemainderColsList
+
+# NOW you can safely load your model
+import joblib
+model = joblib.load("model.joblib")
 # Set up page configurations
 st.set_page_config(page_title="SuperKart Sales Forecaster", layout="centered", page_icon="🛒")
 
